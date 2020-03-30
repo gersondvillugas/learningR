@@ -40,4 +40,26 @@ roi %>%
 roi %>%
   complete(year, quarter)
 
+treatments <- tribble(
+  ~name,         ~treatment,  ~response,
+  "Juan Gabriel", 1,          8, 
+  NA,             2,          10, 
+  NA,             3,          4,
+  "Ricardo",      1,          7,
+  NA,             2,          9
+)
+
+
+treatments %>%
+  fill(name)
+
+
+
+tidyr::who %>%
+  gather(new_sp_m014:newrel_f65, key = "key", value = "cases", na.rm = TRUE) %>%
+  mutate(key = stringr::str_replace(key, "newrel", "new_rel")) %>%
+  separate(key, c("new", "type", "sexage"), sep = "_") %>%
+  select(-new, -iso2, -iso3) %>%
+  separate(sexage, c("sex", "age"), sep = 1)
+
 
