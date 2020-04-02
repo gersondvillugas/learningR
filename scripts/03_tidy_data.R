@@ -11,12 +11,14 @@ table%>%
   geom_line(aes(group=country),color="grey")+
 geom_point(aes(color=country))  
 #à partir de valores con columnas generamos filas
+table4a
 table4a %>%
   gather(`1999`,`2000`,key="year",value = "cases")->tidy4a
 table4b %>%
   gather(`1999`,`2000`,key="year",value = "population")->tidy4b
 left_join(tidy4a,tidy4b)
 #mas largas
+table2
 table2%>%
   spread(key=type,value = count)
 table3%>%
