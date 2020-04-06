@@ -65,3 +65,87 @@ is_list(list(1,2,3))            #list
 is_vector(c(T,T))               #lgl, int, dbl, chr, list
 
 is_scalar_integer(c(4L))
+#Recycling rule ----------------------------
+sample(10)+12
+rep(12,10)
+runif(10)>0.5
+1:10+1:2
+1:10+1:3
+tibble(
+  x=1:4,
+  y=rep(1:2,each=2)
+  
+)
+c(x=4,y=2,z=-1)
+set_names(1:3,c("x","y","z"))
+x<-letters
+x
+x[c(3,2,6)]
+x[c(1,1,2,2)]
+x[c(-3,-1)]
+x[-c(6:15)]
+x<-c(4,5,NA,2,1,1)
+x[!is.na(x)]
+x[x%%2==0]
+x<-c(abc=1,def=2,ghi=3)
+x[c("def","abc")]
+x["abc"]
+x[["abc"]]
+x<-matrix(1:9,byrow = T,ncol=3)
+x
+x[1,]
+x[,1]
+x[-2,]
+x[,-1]
+# Lists -----------------------------
+x<-list(1,2,3)
+x
+str(x)
+x<-list(x=1,y=2,z=3)
+str(x)
+x<-list("x",1,pi,TRUE)
+str(x)
+x<-list(list(1,2,3),list(pi,2*pi))
+x
+x1<-list(c(1,2),c(3,4))
+x1
+x2<-list(list(1,2),list(3,4))
+x2
+x3<-list(1,list(2,list(3)))
+x3
+x<-list(
+  a=1:3,
+  b="soy un string",
+  c=pi,
+  d=list(-2,5)
+  
+)
+x[1:2]
+str(x[1:2])
+x[4]
+x[c("a","b")]
+x[[1]]
+str(x[[1]])
+x$a
+x[[1]][1]
+x<-1:12
+attr(x,"desc")
+attr(x,"desc")<-"vector de las horas del dia"
+attr(x,"created")<-"juan gabriel gomilla"
+attr(x,"created")
+attributes(x)
+as.Date
+x<-factor(c("L","M","J","S","D"),
+          levels = c("L","M","X","J","V","S","D")
+          )
+x
+#date  & date-time
+x<-as.Date("1988-05-19")
+typeof(x)
+attributes(x)
+unclass(x)
+#POSOXct
+x<-lubridate::ymd_hm("1998-05-19 16:30")
+x
+typeof(x)
+unclass(x)
