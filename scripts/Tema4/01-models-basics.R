@@ -121,3 +121,100 @@ sim3%>%
   ggplot(aes(x1,resid,color=x2))+
   geom_point()+
   facet_grid(model~x2)
+mod1<-lm(y  ~ x1 + x2 ,data=sim4)
+mod2<-lm(y  ~ x1 * x2 ,data=sim4)
+grid<-sim4%>%
+  data_grid(
+    x1=seq_range(x1,5),
+    x2=seq_range(x2,5)
+  )%>%
+  gather_predictions(mod1,mod2)
+grid
+seq_range(c(0.23675,0.98765),n=6,pretty = TRUE)
+x1<-rcauchy(1000)
+seq_range(x1,n=10)
+seq_range(x1,n=10,trim=0.1)
+x2<-c(0,1)
+seq_range(x2,n=10)
+seq_range(x2,n=10,expand = 0.25)
+grid %>%
+  ggplot(aes(x1,x2))+
+  geom_tile(aes(fill=pred))+
+  facet_wrap(~model)
+grid %>%
+  ggplot(aes(x2,pred,color=x1,group=x1))+
+  geom_line()+
+  facet_wrap(~model)
+#log(x1) +x2 <-> log(y)= a0 + a1 * sqrt (x1)
+# y ~ x + I(x^2)  <-> y= a0 + a1*x + a2 *x^2
+# y ~ x + x  ^ 2 <-> y ~ x +x * x = x<-> y= 
+df<-tribble(
+  ~y , ~x ,
+  1 , 1,
+  2 , 2,
+  3, 3
+)
+model_matrix(df,y~x+x^2)
+model_matrix(df,y~x +I(x^2))
+set.seed(2018)
+sim5<-tibble(
+  x=seq(0,3.5*pi,length=50),
+  y=4*sin(x)+rnorm(length(x))
+  
+)
+sim5 %>%
+   ggplot(aes(x,y))+
+  geom_point()
+mod1<-lm(y~ns(x,1),data=sim5)
+library(splines)
+sim5 %>%
+  ggplot(aes(x,y)) + 
+  geom_point() + 
+  geom_line(data = grid, color = "red") + 
+  facet_wrap(~model)
+
+
+# Polinomial models -------------------------------------------------------
+
+mod1 <- lm(y ~ poly(x,1), data = sim5)
+mod2 <- lm(y ~ poly(x,2), data = sim5)
+mod3 <- lm(y ~ poly(x,3), data = sim5)
+mod4 <- lm(y ~ poly(x,4), data = sim5)
+mod5 <- lm(y ~ poly(x,5), data = sim5)
+mod6 <- lm(y ~ poly(x,6), data = sim5)
+
+grid <- sim5 %>%
+  data_grid(x = seq_range(x, n = 50, expand = 0.5)) %>%
+  gather_predictions(mod1, mod2, mod3, mod4, mod5, mod6, .pred = "y")
+
+sim5 %>%
+  ggplot(aes(x,y)) + 
+  geom_point() + 
+  geom_line(data = grid, color = "red") + 
+  facet_wrap(~model)
+# Other models -------------------------------------------------------
+
+df <- tribble(
+  ~x, ~y,
+  1, 1.5,
+  2,  NA, 
+  3, 3.5,
+  4, 7.5,
+  NA,  15
+)
+
+mod <- lm(y~x, data = df, na.action = na.exclude)
+# Modelo lineal
+# y = a0 + a1*x1 + a2*x2 + ... + an*xn
+# Modelo lineal generalizado
+stats::glm()
+# Modelo generalizado additivo
+mgcv::gam() # y~s(x) <-> y = f(x)
+# Modelo lineal penalizado
+glmnet::glmnet()
+# Modelo lineal robusto
+MASS::rlm()
+# Árboles y bosques aleatorios
+rpart::rpart()
+randomForest::randomForest()
+xgboost::xgboost()
